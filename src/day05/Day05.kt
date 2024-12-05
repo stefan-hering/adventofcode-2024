@@ -16,21 +16,21 @@ fun readInput(): Pair<List<OrderingRule>, List<Update>> =
           it.second.map { it.split(",").map { it.toInt() } }
     }
 
-fun isCorrect(update: Update, rules: List<OrderingRule>) = rules.filter { rule ->
+fun isCorrect(update: Update, rules: List<OrderingRule>) = rules.none { rule ->
   update.contains(rule.first) && update.contains(rule.second) &&
       update.indexOf(rule.first) > update.indexOf(rule.second)
-}.isEmpty()
+}
 
 fun main() {
   val input = readInput()
 
   val (correct, incorrect) = input.second.partition { isCorrect(it, input.first) }
 
-  correct.map { it[it.size / 2] }.sum().run(::println)
+  correct.sumOf { it[it.size / 2] }.run(::println)
 
   val fixed = incorrect.map { update ->
     val corrected = update.toMutableList()
-    val applicableRules = input.first.filter { rule -> update.contains(rule.first) && update.contains(rule.second) }
+    val applicableRules = input.first.filter { rule -> update.containsAll(rule.toList()) }
 
     while (!isCorrect(corrected, applicableRules)) {
 
@@ -45,6 +45,6 @@ fun main() {
     corrected
   }
 
-  fixed.map { it[it.size / 2] }.sum().run(::println)
+  fixed.sumOf { it[it.size / 2] }.run(::println)
 }
 
