@@ -66,7 +66,7 @@ fun isCircle(state: Maze, start: Position): Boolean {
       positions[next] = positions[next]!! + 1
     } else { positions[next] = 1 }
 
-    if(positions[next] == 50) {
+    if(positions[next] == 4) {
       return true
     }
   }
